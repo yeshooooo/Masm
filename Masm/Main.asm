@@ -6,6 +6,9 @@ option	casemap:none
 
 .code
 main proc
+	mov AL, 0FFh
+	add AL, 1
+
 
 	ret	
 main endp	

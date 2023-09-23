@@ -38,7 +38,7 @@ end
 
 
 
-
+# 1.3 通用寄存器
 
 * 通用寄存器(32位)
 
@@ -54,4 +54,187 @@ end
 | EBP    | 堆栈指针指向线程栈底   | 5    | 0x00000000 ~ 0xFFFFFFFF |
 | ESI    | 字符串操作源指针       | 6    | 0x00000000 ~ 0xFFFFFFFF |
 | EDI    | 字符串操作目标指针     | 7    | 0x00000000 ~ 0xFFFFFFFF |
+
+* 通用寄存器对应关系
+
+16位和8位寄存器位于32位寄存器内部，并没有新的寄存器
+
+![image-20230922092706230](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309220927269.png)
+
+并不是每个32位寄存器里都有8位寄存器
+
+| 32Bit | 16Bit | 8Bit   |
+| ----- | ----- | ------ |
+| EAX   | AX    | AH和AL |
+| ECX   | CX    | CH和CL |
+| EDX   | DX    | DH和DL |
+| EBX   | BX    | BH和BL |
+| ESP   | SP    | 无     |
+| EBP   | BP    | 无     |
+| ESI   | SI    | 无     |
+| EDI   | DI    | 无     |
+
+### x86dbg注意事项
+
+暂时只断入口点
+
+![image-20230922100316430](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309221003485.png)
+
+#### 1.选中某一行按空格开始编辑
+
+#### 2. 双击寄存器区块的EIP可以跳转到绿色执行点
+
+#### 3. 点击步进/F8让绿色执行当前行
+
+![image-20230922101123431](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309221011458.png)
+
+### vs2019
+
+1. 断点--debug --register
+
+2. 右键窗口显示 cpu，cpu段和flags
+
+   ```cpp
+   .586	
+   .model	flat, stdcall
+   option	casemap:none
+   
+   .data	
+   
+   .code
+   main proc
+   	; 在纯汇编中，16进制数后面要加个H/h
+   	; 如果第一位以字母开头，要在他前面加一个0
+   	mov EAX, 0Fh
+   	mov	AX, 0DDDDh
+   	mov AH, 11h
+   	mov AL, 22h
+   
+   
+   	ret	
+   main endp	
+   end	
+   ```
+
+   
+
+# 1.4 段寄存器
+
+段寄存器需要进入内核才能感知到
+
+* CPU - 保护模式---两个重要的机制
+
+  详见内核，通过这两种机制保证运行的完整和正确性
+
+  * 段的机制
+  * 页的机制
+
+* 常见段寄存器： CS SS DS ES FS GS(x64下才有)
+
+  * CS - Code Segment 代码段
+  * SS - Stack Segment 堆栈段
+  * DS - Data Segment 数据段，==大部分基础从这寻址==
+  * ES - Extend Segment 扩展段， ==很多复合指令都会用ES修饰==
+  * ==FS== - 最特殊，是基于线程而言， R3 指向 **_TEB** ,R0指向**_KPCR**,ring是环的意思，cpu的级别划分，常用的是0环和3环，0环是内核层
+  * GS
+
+* ==段寄存器位宽==： 
+
+  **位宽是96**
+
+  x86dbg
+
+  ![image-20230922112146754](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309221121788.png)
+
+  vs2019
+
+  ![image-20230922112402605](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309221124638.png)
+
+  
+
+  
+
+* Segment Selector 
+
+  上面看到的0023 和002b等叫做段选择子 ,段选择子有三部分组成，基于位数
+
+  * RPL/CPL (0 ~ 1位)
+
+  * TI ( 2 ~ 2位)
+
+  * INDEX (3 ~ 15位)
+
+    ![image-20230922113720832](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309221138563.png)
+
+  * 通过段选择子才能找到段描述符Segment Descriptor
+
+    * P:是否有效
+    * DPL：特权级别
+    * S:
+    * TYPE: 具体类型
+    * LIMIT
+    * BASE
+
+# 1.5 指令指针寄存器EIP
+
+* EIP寄存器当中存储的是下一条即将要执行的指令地址
+
+# 1.6 标志寄存器EFLAGS
+
+* EFLAGS 寄存器占4个字节32位
+* 由一堆标志位共同组成EFLAGS寄存器且每个标志位占据一个二进制位
+
+灰颜色表示值是固定的，不能修改
+
+CF: 进位标志
+
+PF: 奇偶标志
+
+AF: 辅助进位标志
+
+ZF: 零标志位
+
+SF: 符号标志位
+
+DF:
+
+TF:
+
+IF: 中断
+
+DF：方向位
+
+![image-20230922155753617](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309221557743.png)
+
+x86dbg和vs中的命名有区别，推荐看x86dbg中的名字
+
+![image-20230922155400769](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309221554826.png)
+
+x86dbg中可以点击更改值
+
+
+
+
+
+![image-20230922155531352](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309221555481.png)
+
+### 1.6.1 进位标志位CF： Carry Flag
+
+最高有效位本身发生进位或者借位时，才是1
+
+![image-20230922163124705](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309221631765.png)
+
+
+
+溢出
+
+![image-20230922162954679](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309221629283.png)
+
+向最高有效位借位
+
+![image-20230922162920872](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309221629409.png)
+
+### 1.6.2 奇偶标志位PF: Parity Flag
+
+注意0是偶数
 
