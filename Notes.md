@@ -222,7 +222,7 @@ x86dbg中可以点击更改值
 
 最高有效位本身发生进位或者借位时，才是1
 
-![image-20230922163124705](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309221631765.png)
+![image-20230925151745492](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309251517548.png)
 
 
 
@@ -236,5 +236,40 @@ x86dbg中可以点击更改值
 
 ### 1.6.2 奇偶标志位PF: Parity Flag
 
-注意0是偶数
+只看最低有效字节
 
+注意0是偶数，
+
+![image-20230925093923192](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309250939234.png)
+
+### 1.6.3 辅助进位标志AF:  Auxiliar Carry Flag
+
+忽略网上的字节和字操作等，因为只有第四位进位才会置1
+
+![image-20230925111638185](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309251116298.png)
+
+### 1.6.4 零标志位ZF: Zero Flag 
+
+ ![image-20230925142647782](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309251426837.png)
+
+### 1.6.5 符号标志位SF: Signed Flag
+
+运算结果的最高有效位是几就是几
+
+![image-20230925143813227](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309251438282.png)
+
+### 1.6.6 方向标志位DF：Direction Flag
+
+串是指字符串
+
+![image-20230925150633206](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309251506272.png)
+
+### 1.6.7 溢出标志位OF: Overflow Flag:
+
+计算机内部没有有符号还是无符号这个说法
+
+![image-20230925153110690](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309251531759.png)
+
+### 1.6.8 EFLAGS寄存器
+
+![image-20230925155659147](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309251556213.png)
