@@ -273,3 +273,48 @@ x86dbg中可以点击更改值
 ### 1.6.8 EFLAGS寄存器
 
 ![image-20230925155659147](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309251556213.png)
+
+# 2.1 内存管理
+
+* 保护模式中，处理器可以同时运行多个程序，它为每个进程分配4GB内存空间(虚拟的独立的),程序之间禁止意外访问其他程序的代码和数据
+
+* 寄存器 - 速度快 - 数量少
+
+  定位宽的寄存器只有这些
+
+  * 32位：EAX ECX EDX EBX ESP EBP ESI EDI 
+  * 16位：AX CX DX BX SP BP SI DI
+  * 8位：AH AL CH CL DH DL BH BL
+
+* 内存 - 速度慢 - 数量多
+
+  * 内存换算
+
+    * 1Byte = 8Bit
+    * 1KB = 1024 Byte
+    * 1MB = 1024 KB
+    * 1Gb = 1024MB
+
+  * 数据位宽
+
+    * BYTE = 8Bit
+    * WORD = 16Bit
+    * DWORD = 32Bit
+    * QWORD = 64Bit
+
+  * 内存编号
+
+    32位下内存编号[0x00000000 ~ 0xFFFFFFFF]
+
+  * 内存宽度
+
+    ==32位下每个内存地址宽度1byte,一个字节,内存大小除以内存编号能算出来的==
+
+  * 内存图解
+
+    
+
+  
+
+
+
