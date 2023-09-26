@@ -312,9 +312,59 @@ x86dbg中可以点击更改值
 
   * 内存图解
 
+    ![image-20230926083053601](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309260830653.png)
     
+
+
+
+* 存储端序
+
+  ![image-20230926083845656](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309260838728.png)
+
+* 内存读写
+
+  ==FS和GS和CS段选择器不能修饰内存==
+
+  ```assembly
+  ; 两个操作数位宽相同
+  ; 内存编号前的段寄存器DS,SS,ES都行，不能用FS和GS和CS
+  MOV 写入宽度 PTR DS:[内存编号], 立即数
+  ; 内存写入
+  MOV DWORD PTR DS:[0x12345678], 0x11223344
+  ; 内存读取
+  MOV EAX, DWORD PTR DS:[0x12345678]
+  ```
 
   
 
+ * 内存寻址
 
+   立即数一般是找到基址了
+
+  ```assembly
+  1. [立即数]
+  ; x86dbg里可以省略成mov eax,[133FEDC],只勾选XEDParse，他会自动补全
+  mov eax,dword ptr ds:[133FEDC]
+  2.[寄存器]
+  mov eax, 0x133FEE4
+  mov ecx, dword ptr ds:[eax]
+  3. [寄存器 + 立即数]
+  mov ecx, dword ptr ds:[eax+0x8]
+  4. [寄存器 + 寄存器*(1/2/4/8)]
+  ; 对应数组
+  mov eax, 0x8FFAA4
+  mov ecx, 0x2
+  mov edx, dword ptr ds:[eax+ecx*4]
+  5. [寄存器 + 寄存器*(1/2/4/8) + 立即数]
+  ; 对应结构体
+  同4
+  ```
+
+  
+
+* 正向代码对比
+
+  ![image-20230926163142998](https://yeshooonotes.oss-cn-shenzhen.aliyuncs.com/notespic/202309261631060.png)
+
+[否则会有ASLR机制](https://blog.csdn.net/bcbobo21cn/article/details/115060095)
 
